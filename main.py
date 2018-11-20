@@ -1,9 +1,3 @@
-"""
-Guide function that prints guideline of this software.
-"""
-def guide():
-    print("Guide")
-
 class HomeAppliance(object):
     def __init__(self):
         self._status = None
@@ -64,12 +58,44 @@ class AirCleaner(HomeAppliance):
     def status(self, status):
         self._status = status
 
+class Menu():
+    def __init__(self):
+        self.choices = {
+            "1": self.something
+        }
+
+"""
+Guide function that prints guideline of this software.
+"""
+def showGuideline():
+    print("Guide")
+
+def setPassword():
+    print("Set Master Password")
+
+def showMenu():
+    print("Print Menu")
+
+def init():
+    showGuideline()
+    setPassword()
+
 def main():
-    guide()
-    print("Hello world")
-    test = Boiler()
-    test.status = '1'
-    print(test.status)
+    init()
+
+    while(1):
+        showMenu()
+
+        controlValue = input("메뉴를 선택해주세요: ")
+
+        print(controlValue)
+        
+        break
+    
+    # print("Hello world")
+    # test = Boiler()
+    # test.status = '1'
+    # print(test.status)
 
 
 if __name__ == '__main__':
