@@ -114,7 +114,15 @@ class Menu():
         except ValueError as e:
             return (e, True)
 
-    def add_appliance(self, appliances):
+    def add_appliance(self, appliances, pw_manager):
+        password = input("비밀번호를 입력해주세요: ")
+        
+        if pw_manager.compare_password(password):
+            print("통과")
+        else:
+            print("통과 X")
+            return
+        
         print("[가전제품 목록]")
         print("1. 세탁기")
         print("2. 에어컨")
@@ -166,8 +174,6 @@ def main():
     menu = Menu()
     pw_manager = PasswordManager()
 
-    
-    
     appliances = []
 
     while True:
@@ -183,7 +189,7 @@ def main():
             if message == 0:
                 break
             if message == 1:
-                menu.add_appliance(appliances)
+                menu.add_appliance(appliances, pw_manager)
                 print(appliances)
 
 
