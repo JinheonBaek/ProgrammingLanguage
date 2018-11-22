@@ -60,37 +60,87 @@ class AirCleaner(HomeAppliance):
 
 class Menu():
     def __init__(self):
-        self.choices = {
-            "1": self.something
+        self._display_string = '''
+[메뉴]
+1. 가전제품 등록하기
+2. 가전제품 등록 해제하기
+3. 가전제품 상태 확인하기
+4. 가전제품 상태 변경하기
+0. 프로그램 종료하기
+'''
+        self._select = None
+        self._choices = {
+            1: self.add_appliance,
+            2: self.del_appliance,
+            3: self.check_appliance_status,
+            4: self.change_appliance_status
         }
+
+    def print_choice(self, choice = False):
+        if choice == False: 
+            choice = self._select
+        
+        action = self._choices.get(choice)
+        action()
+
+    def select(self):
+        try:
+            choice = int(input("메뉴를 선택해주세요: "))
+            
+            if 0 <= choice <= 4:
+                self._select = choice
+                return self._select
+            else:
+                raise ValueError
+
+        except ValueError:
+            return None
+
+    def add_appliance(self):
+        print("Add Appliance")
+
+    def del_appliance(self):
+        print("Delete Appliance")
+
+    def check_appliance_status(self):
+        print("Check Appliance Status")
+    
+    def change_appliance_status(self):
+        print("Change Appliance Status")
+
+    def __str__(self):
+        return self._display_string
+
 
 """
 Guide function that prints guideline of this software.
 """
-def showGuideline():
+def show_guideline():
     print("Guide")
 
-def setPassword():
+def set_password():
     print("Set Master Password")
 
-def showMenu():
-    print("Print Menu")
-
-def init():
-    showGuideline()
-    setPassword()
+    return "1"
 
 def main():
-    init()
+    show_guideline()
+    password = set_password()
+    
+    menu = Menu()
+    appliances = []
 
-    while(1):
-        showMenu()
+    while True:
+        print(menu)
 
-        controlValue = input("메뉴를 선택해주세요: ")
+        choice = menu.select()
 
-        print(controlValue)
-        
-        break
+        if choice == 0:
+            break
+        elif choice == None:
+            print("Input Number Error")
+        else:
+            menu.print_choice()
     
     # print("Hello world")
     # test = Boiler()
