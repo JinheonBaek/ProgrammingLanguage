@@ -70,10 +70,11 @@ class Menu():
 '''
         self._select = None
         self._choices = {
-            1: self.add_appliance,
-            2: self.delete_appliance,
-            3: self.check_appliance_status,
-            4: self.change_appliance_status
+            0: lambda: print("\n프로그램을 종료합니다. \n이용해 주셔서 감사합니다."),
+            1: lambda: print("\n가전제품 등록하기를 선택 하셨습니다."),
+            2: lambda: print("\n가전제품 등록 해제하기를 선택 하셨습니다."),
+            3: lambda: print("\n가전제품 상태 확인하기를 선택 하셨습니다."),
+            4: lambda: print("\n가전제품 상태 변경하기를 선택 하셨습니다.")
         }
 
     def print_choice(self, choice = False):
@@ -96,9 +97,31 @@ class Menu():
         except ValueError as e:
             return (e, True)
 
-    def add_appliance(self):
-        print("[1. 가전제품 등록하기]")
-        print("")
+    def add_appliance(self, appliances):
+        print("[가전제품 목록]")
+        print("1. 세탁기")
+        print("2. 에어컨")
+        print("3. 보일러")
+        print("4. 공기청정기")
+
+        try:
+            choice = int(input("추가하실 가전제품 목록을 선택 해주세요: "))
+            
+            if choice == 1:
+                appliances.append(WashingMachine())
+            elif choice == 2:
+                appliances.append(AirConditioner())
+            elif choice == 3:
+                appliances.append(Boiler())
+            elif choice == 4:
+                appliances.append(AirCleaner())
+            else:
+                raise ValueError('Input number range error')
+
+        except ValueError as e:
+            print(e)
+
+
 
     def delete_appliance(self):
         print("Delete Appliance")
@@ -139,11 +162,15 @@ def main():
         if err_detected == True:
             print(message)
         else:
+            menu.print_choice(choice = message)
+
             if message == 0:
                 break
-            
-            menu.print_choice(choice = message)
-            
+            if message == 1:
+                menu.add_appliance(appliances)
+                print(appliances)
+
+
 
     
     # print("Hello world")
