@@ -183,10 +183,22 @@ class Menu():
             print(e)
 
 
-    def check_appliance_status(self):
+    def check_appliance_status(self, appliances):
+        if not appliances:
+            print("Appliances list is empty")
+            return
+
         print("Check Appliance Status")
+
+        for index, appliance in enumerate(appliances):
+            print(index, appliance.status)
+
     
-    def change_appliance_status(self):
+    def change_appliance_status(self, appliances):
+        if not appliances:
+            print("Appliances list is empty")
+            return
+
         print("Change Appliance Status")
 
     def __str__(self):
@@ -229,6 +241,10 @@ def main():
             if (pw_manager.password_check() == False): continue
             menu.delete_appliance(appliances)
             print(appliances)
+        elif message == 3:
+            menu.check_appliance_status(appliances)
+        elif message == 4:
+            menu.change_appliance_status(appliances)
 
 
 
