@@ -58,6 +58,21 @@ class AirCleaner(HomeAppliance):
     def status(self, status):
         self._status = status
 
+class PasswordManager():
+    def __init__(self):
+        self._password = None
+    
+    def set_password(self, password):
+        self._password = password
+
+    def compare_password(self, password):
+        if (self._password == password):
+            return True
+        else:
+            return False
+    
+
+
 class Menu():
     def __init__(self):
         self._display_string = '''
@@ -142,16 +157,13 @@ Guide function that prints guideline of this software.
 def show_guideline():
     print("Guide")
 
-def set_password():
-    print("Set Master Password")
-
-    return "1"
 
 def main():
     show_guideline()
-    password = set_password()
     
     menu = Menu()
+    pw_manager = PasswordManager()
+    
     appliances = []
 
     while True:
