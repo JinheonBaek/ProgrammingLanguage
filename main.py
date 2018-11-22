@@ -22,6 +22,9 @@ class WashingMachine(HomeAppliance):
     def status(self, status):
         self._status = status
 
+    def __str__(self):
+        return "세탁기 {}".format(self._status)
+
 class AirConditioner(HomeAppliance):
     def __init__(self):
         self._status = None
@@ -33,6 +36,9 @@ class AirConditioner(HomeAppliance):
     @status.setter
     def status(self, status):
         self._status = status
+
+    def __str__(self):
+        return "에어컨 {}".format(self._status)
 
 class Boiler(HomeAppliance):
     def __init__(self):
@@ -46,6 +52,9 @@ class Boiler(HomeAppliance):
     def status(self, status):
         self._status = status
 
+    def __str__(self):
+        return "보일러 {}".format(self._status)
+
 class AirCleaner(HomeAppliance):
     def __init__(self):
         self._status = None
@@ -57,6 +66,9 @@ class AirCleaner(HomeAppliance):
     @status.setter
     def status(self, status):
         self._status = status
+
+    def __str__(self):
+        return "공기청정기 {}".format(self._status)
 
 class PasswordManager():
     def __init__(self):
@@ -72,6 +84,17 @@ class PasswordManager():
             return True
         else:
             return False
+
+    def password_check(self):
+        pass
+        # password = input("비밀번호를 입력해주세요: ")
+
+        # if self.compare_password(password):
+        #     print("통과")
+        #     return True
+        # else:
+        #     print("통과 X")
+        #     return False
     
 
 
@@ -114,15 +137,7 @@ class Menu():
         except ValueError as e:
             return (e, True)
 
-    def add_appliance(self, appliances, pw_manager):
-        password = input("비밀번호를 입력해주세요: ")
-        
-        if pw_manager.compare_password(password):
-            print("통과")
-        else:
-            print("통과 X")
-            return
-        
+    def add_appliance(self, appliances):
         print("[가전제품 목록]")
         print("1. 세탁기")
         print("2. 에어컨")
@@ -146,10 +161,27 @@ class Menu():
         except ValueError as e:
             print(e)
 
+    def delete_appliance(self, appliances):
+        if not appliances:
+            print("Appliances list is empty")
+            return
+        
+        print("[현재 등록되어 있는 가전제품 목록]")
 
+        for index, appliance in enumerate(appliances):
+            print(index, appliance)
 
-    def delete_appliance(self):
-        print("Delete Appliance")
+        try:
+            choice = int(input("제거하실 가전제품 번호를 선택 해주세요: "))
+            
+            if 0 <= choice < len(appliances):
+                appliances.pop(choice)
+            else:
+                raise ValueError('Input number range error')
+
+        except ValueError as e:
+            print(e)
+
 
     def check_appliance_status(self):
         print("Check Appliance Status")
@@ -183,14 +215,20 @@ def main():
 
         if err_detected == True:
             print(message)
-        else:
-            menu.print_choice(choice = message)
+            continue
+        
+        menu.print_choice(choice = message)
 
-            if message == 0:
-                break
-            if message == 1:
-                menu.add_appliance(appliances, pw_manager)
-                print(appliances)
+        if message == 0:
+            break
+        elif message == 1:
+            if (pw_manager.password_check() == False): continue
+            menu.add_appliance(appliances)
+            print(appliances)
+        elif message == 2:
+            if (pw_manager.password_check() == False): continue
+            menu.delete_appliance(appliances)
+            print(appliances)
 
 
 
