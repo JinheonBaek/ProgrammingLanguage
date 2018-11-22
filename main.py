@@ -71,7 +71,7 @@ class Menu():
         self._select = None
         self._choices = {
             1: self.add_appliance,
-            2: self.del_appliance,
+            2: self.delete_appliance,
             3: self.check_appliance_status,
             4: self.change_appliance_status
         }
@@ -89,17 +89,18 @@ class Menu():
             
             if 0 <= choice <= 4:
                 self._select = choice
-                return self._select
+                return (self._select, False)
             else:
-                raise ValueError
+                raise ValueError('Input number range error')
 
-        except ValueError:
-            return None
+        except ValueError as e:
+            return (e, True)
 
     def add_appliance(self):
-        print("Add Appliance")
+        print("[1. 가전제품 등록하기]")
+        print("")
 
-    def del_appliance(self):
+    def delete_appliance(self):
         print("Delete Appliance")
 
     def check_appliance_status(self):
@@ -133,14 +134,17 @@ def main():
     while True:
         print(menu)
 
-        choice = menu.select()
+        (message, err_detected) = menu.select()
 
-        if choice == 0:
-            break
-        elif choice == None:
-            print("Input Number Error")
+        if err_detected == True:
+            print(message)
         else:
-            menu.print_choice()
+            if message == 0:
+                break
+            
+            menu.print_choice(choice = message)
+            
+
     
     # print("Hello world")
     # test = Boiler()
