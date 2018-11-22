@@ -61,8 +61,10 @@ class AirCleaner(HomeAppliance):
 class PasswordManager():
     def __init__(self):
         self._password = None
+        self.set_password()
     
-    def set_password(self, password):
+    def set_password(self):
+        password = input("비밀번호를 입력해주세요: ")
         self._password = password
 
     def compare_password(self, password):
@@ -163,6 +165,8 @@ def main():
     
     menu = Menu()
     pw_manager = PasswordManager()
+
+    
     
     appliances = []
 
