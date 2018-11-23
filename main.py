@@ -56,7 +56,7 @@ class WashingMachine(HomeAppliance):
             print(e)
 
     def start(self, interval):
-        self._status = "Start"
+        super(WashingMachine, self).start()
         self._started_at = datetime.datetime.now()
         self._interval = interval
 
@@ -110,7 +110,7 @@ class AirConditioner(HomeAppliance):
             print(e)
 
     def start(self):
-        self._status = "Start"
+        super(AirConditioner, self).start()
         
         if self.set_temperature() == False:
             self._target_temperature = 24
@@ -176,8 +176,8 @@ class Boiler(HomeAppliance):
             print(e)
 
     def start(self):
-        self._status = "Start"
-        
+        super(Boiler, self).start()
+
         if self.set_temperature() == False:
             self._target_temperature = 24
             print("보일러 온도 설정에 실패하여 보일러를 기본온도(24도)로 시작하였습니다.")
@@ -225,32 +225,6 @@ class AirCleaner(HomeAppliance):
 
         except ValueError as e:
             print(e)
-
-class PasswordManager():
-    def __init__(self):
-        self._password = None
-        self.set_password()
-    
-    def set_password(self):
-        password = input("비밀번호를 입력해주세요: ")
-        self._password = password
-
-    def compare_password(self, password):
-        if (self._password == password):
-            return True
-        else:
-            return False
-
-    def password_check(self):
-        pass
-        # password = input("비밀번호를 입력해주세요: ")
-
-        # if self.compare_password(password):
-        #     print("통과")
-        #     return True
-        # else:
-        #     print("통과 X")
-        #     return False
     
 class Menu():
     def __init__(self):
@@ -365,8 +339,7 @@ class Menu():
 
 def main():
     menu = Menu()
-    pw_manager = PasswordManager()
-
+    
     appliances = []
 
     while True:
@@ -383,16 +356,42 @@ def main():
         if message == 0:
             break
         elif message == 1:
-            if (pw_manager.password_check() == False): continue
             menu.add_appliance(appliances)
         elif message == 2:
-            if (pw_manager.password_check() == False): continue
             menu.delete_appliance(appliances)
         elif message == 3:
             menu.check_appliance_status(appliances)
         elif message == 4:
-            if (pw_manager.password_check() == False): continue
             menu.change_appliance_status(appliances)
 
 if __name__ == '__main__':
     main()
+
+# if (pw_manager.password_check() == False): continue
+#
+# class PasswordManager():
+#     def __init__(self):
+#         self._password = None
+#         self.set_password()
+    
+#     def set_password(self):
+#         password = input("비밀번호를 입력해주세요: ")
+#         self._password = password
+
+#     def compare_password(self, password):
+#         if (self._password == password):
+#             return True
+#         else:
+#             return False
+
+#     def password_check(self):
+#         pass
+#         # password = input("비밀번호를 입력해주세요: ")
+
+#         # if self.compare_password(password):
+#         #     print("통과")
+#         #     return True
+#         # else:
+#         #     print("통과 X")
+#         #     return False
+    
