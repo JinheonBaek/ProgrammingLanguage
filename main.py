@@ -237,6 +237,12 @@ class Menu():
             3: lambda: print("\n가전제품 상태 확인하기를 선택 하셨습니다."),
             4: lambda: print("\n가전제품 상태 변경하기를 선택 하셨습니다.")
         }
+        self._appliances = {
+            1: WashingMachine,
+            2: AirConditioner,
+            3: Boiler,
+            4: AirCleaner
+        }
 
     def print_choice(self, choice = False):
         if choice == False: 
@@ -259,23 +265,14 @@ class Menu():
             return (e, True)
 
     def add_appliance(self, appliances):
-        print("[가전제품 목록]")
-        print("1. 세탁기")
-        print("2. 에어컨")
-        print("3. 보일러")
-        print("4. 공기청정기")
-
+        print("[가전제품 목록]\n1. 세탁기\n2. 에어컨\n3. 보일러\n4. 공기청정기")
+        
         try:
             choice = int(input("추가하실 가전제품 목록을 선택 해주세요: "))
             
-            if choice == 1:
-                appliances.append(WashingMachine())
-            elif choice == 2:
-                appliances.append(AirConditioner())
-            elif choice == 3:
-                appliances.append(Boiler())
-            elif choice == 4:
-                appliances.append(AirCleaner())
+            if 1 <= choice <= 4:
+                appliance = self._appliances.get(choice)
+                appliances.append(appliance())
             else:
                 raise ValueError('Input number range error')
 
