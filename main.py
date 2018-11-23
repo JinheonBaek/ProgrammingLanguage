@@ -13,6 +13,9 @@ class HomeAppliance(object):
     def status(self):
         return "가전제품 이름 - {0} / 가전제품 상태 - {1} / 가전제품 등록 일자 - {2}".format(self._name, self._status, self._created_at)
 
+    def start(self):
+        self._status = "Start"
+
     def end(self):
         self._status = "Wait"
     
@@ -24,22 +27,28 @@ class WashingMachine(HomeAppliance):
 
     @property
     def status(self):
-        return super(WashingMachine, self).status
+        self.update()
+        basic_status = super(WashingMachine, self).status
+        
+        if self._status == "Wait":
+            return basic_status
+        else:
+            finished_at = self._started_at + datetime.timedelta(minutes = self._interval)
+            return basic_status + ' / 잔여 시각 - {0}'.format(finished_at - datetime.datetime.now())
 
     def controller(self):
-        self.update()
-        print(self.status)
-
         try:
-            print("[세탁 옵션] \n1. 행굼\n2. 표준\n3. 강력 세탁")
+            print("[세탁 옵션] \n1. 행굼\n2. 표준\n3. 강력 세탁\n0. 메인메뉴로 돌아가기")
 
             choice = int(input("세탁 옵션을 선택 해주세요: "))
             
-            if 1 <= choice <= 3:
+            if choice == 0:
+                return
+            elif 1 <= choice <= 3:
                 if self._status == "Wait": 
                     self.start(interval = 0.1 * choice)
                 else: 
-                    print("In start now, time left")
+                    print("현재 세탁 진행 중입니다.\n세탁이 완료된 후 다음 세탁을 이용 부탁드립니다.")
             else:
                 raise ValueError('Input number range error')
 
@@ -60,139 +69,40 @@ class WashingMachine(HomeAppliance):
 class AirConditioner(HomeAppliance):
     def __init__(self):
         super(AirConditioner, self).__init__("에어컨", "Wait")
-        self._started_at = datetime.datetime.now()
         self._target_temperature = 0
 
     @property
     def status(self):
-        return super(AirConditioner, self).status
+        basic_status = super(AirConditioner, self).status
+        
+        if self._status == "Wait":
+            return basic_status
+        else:
+            return basic_status + ' / 현재 설정 온도 - {0}'.format(self._target_temperature)
 
     def controller(self):
         try:
-            print("[에어컨] \n1. 에어컨 시작\n2. 에어컨 온도 조절\n3. 에어컨 종료")
+            print("[에어컨 옵션] \n1. 에어컨 시작\n2. 에어컨 온도 조절\n3. 에어컨 종료\n0. 메인메뉴로 돌아가기")
 
             choice = int(input("에어컨 옵션을 선택 해주세요: "))
             
-            if choice == 1:
-                self.start()
+            if choice == 0:
+                return
+            elif choice == 1:
+                if self._status == "Wait":
+                    self.start()
+                else:
+                    print("현재 에어컨이 켜져있는 상태 입니다. 에어컨의 희망 온도는 {0} 입니다.".format(self._target_temperature))
             elif choice == 2:
-                self.set_temperature()
+                if self._status == "Wait":
+                    print("현재 에어컨이 꺼져있는 상태 입니다. 에어컨을 킨 다음 이용 부탁드립니다.")
+                else:
+                    self.set_temperature()
             elif choice == 3:
-                self.end()
-            else:
-                raise ValueError('Input number range error')
-
-        except ValueError as e:
-            print(e)
-
-    def start(self):
-        try:
-            print("가능한 에어컨 설정 온도 범위: 18 ~ 30")
-
-            temperature = int(input("에어컨 온도를 설정 해주세요: "))
-            
-            if 18 <= temperature <= 30:
-                self._status = "Start"
-                self._started_at = datetime.datetime.now()
-                self._target_temperature = temperature
-            else:
-                raise ValueError('Input number range error')
-
-        except ValueError as e:
-            print(e)
-
-
-    def set_temperature(self):
-        try:
-            print("가능한 에어컨 설정 온도 범위: 18 ~ 30")
-
-            temperature = int(input("에어컨 온도를 설정 해주세요: "))
-            
-            if 18 <= temperature <= 30:
-                self._target_temperature = temperature
-            else:
-                raise ValueError('Input number range error')
-
-        except ValueError as e:
-            print(e)
-
-class Boiler(HomeAppliance):
-    def __init__(self):
-        super(Boiler, self).__init__("보일러", "Wait")
-        self._started_at = datetime.datetime.now()
-        self._target_temperature = 0
-
-    @property
-    def status(self):
-        return super(Boiler, self).status
-
-    def controller(self):
-        try:
-            print("[보일러] \n1. 보일러 시작\n2. 보일러 온도 조절\n3. 보일러 종료")
-
-            choice = int(input("보일러 옵션을 선택 해주세요: "))
-            
-            if choice == 1:
-                self.start()
-            elif choice == 2:
-                self.set_temperature()
-            elif choice == 3:
-                self.end()
-            else:
-                raise ValueError('Input number range error')
-
-        except ValueError as e:
-            print(e)
-
-    def start(self):
-        try:
-            print("가능한 보일러 설정 온도 범위: 18 ~ 50")
-
-            temperature = int(input("보일러 온도를 설정 해주세요: "))
-            
-            if 18 <= temperature <= 30:
-                self._status = "Start"
-                self._started_at = datetime.datetime.now()
-                self._target_temperature = temperature
-            else:
-                raise ValueError('Input number range error')
-
-        except ValueError as e:
-            print(e)
-
-    def set_temperature(self):
-        try:
-            print("가능한 보일러 설정 온도 범위: 18 ~ 30")
-
-            temperature = int(input("보일러 온도를 설정 해주세요: "))
-            
-            if 18 <= temperature <= 30:
-                self._target_temperature = temperature
-            else:
-                raise ValueError('Input number range error')
-
-        except ValueError as e:
-            print(e)
-
-class AirCleaner(HomeAppliance):
-    def __init__(self):
-        super(AirCleaner, self).__init__("공기청정기", "Wait")
-        self._started_at = datetime.datetime.now()
-
-    @property
-    def status(self):
-        return super(AirCleaner, self).status
-
-    def controller(self):
-        try:
-            print("[공기청정기] \n1. 공기청정기 시작\n2. 공기청정기 종료")
-
-            choice = int(input("공기청정기 옵션을 선택 해주세요: "))
-            
-            if choice == 1:
-                self.start()
-            elif choice == 2:
-                self.end()
+                if self._status == "Wait":
+                    print("현재 에어컨이 꺼져있는 상태 입니다.")
+                else:
+                    self.end()
             else:
                 raise ValueError('Input number range error')
 
@@ -201,7 +111,120 @@ class AirCleaner(HomeAppliance):
 
     def start(self):
         self._status = "Start"
-        self._started_at = datetime.datetime.now()
+        
+        if self.set_temperature() == False:
+            self._target_temperature = 24
+            print("에어컨 온도 설정에 실패하여 에어컨을 기본온도(24도)로 시작하였습니다.")
+
+    def set_temperature(self):
+        try:
+            print("에어컨 설정 온도 범위 (정수): 18 ~ 30")
+
+            temperature = int(input("에어컨 온도를 설정 해주세요: "))
+            
+            if 18 <= temperature <= 30:
+                self._target_temperature = temperature
+                return True
+            else:
+                raise ValueError('Input number range error')
+
+        except ValueError as e:
+            print(e)
+            return False
+
+class Boiler(HomeAppliance):
+    def __init__(self):
+        super(Boiler, self).__init__("보일러", "Wait")
+        self._target_temperature = 0
+
+    @property
+    def status(self):
+        basic_status = super(AirConditioner, self).status
+        
+        if self._status == "Wait":
+            return basic_status
+        else:
+            return basic_status + ' / 현재 설정 온도 - {0}'.format(self._target_temperature)
+
+    def controller(self):
+        try:
+            print("[보일러] \n1. 보일러 시작\n2. 보일러 온도 조절\n3. 보일러 종료\n0. 메인메뉴로 돌아가기")
+
+            choice = int(input("보일러 옵션을 선택 해주세요: "))
+            
+            if choice == 0:
+                return
+            elif choice == 1:
+                if self._status == "Wait":
+                    self.start()
+                else:
+                    print("현재 보일러가 켜져있는 상태 입니다. 보일러의 희망 온도는 {0} 입니다.".format(self._target_temperature))
+            elif choice == 2:
+                if self._status == "Wait":
+                    print("현재 보일러가 꺼져있는 상태 입니다. 보일러를 킨 다음 이용 부탁드립니다.")
+                else:
+                    self.set_temperature()
+            elif choice == 3:
+                if self._status == "Wait":
+                    print("현재 보일러가 꺼져있는 상태 입니다.")
+                else:
+                    self.end()
+            else:
+                raise ValueError('Input number range error')
+
+        except ValueError as e:
+            print(e)
+
+    def start(self):
+        self._status = "Start"
+        
+        if self.set_temperature() == False:
+            self._target_temperature = 24
+            print("보일러 온도 설정에 실패하여 보일러를 기본온도(24도)로 시작하였습니다.")
+
+    def set_temperature(self):
+        try:
+            print("보일러 설정 온도 범위 (정수): 18 ~ 30")
+
+            temperature = int(input("보일러 온도를 설정 해주세요: "))
+            
+            if 18 <= temperature <= 30:
+                self._target_temperature = temperature
+                return True
+            else:
+                raise ValueError('Input number range error')
+
+        except ValueError as e:
+            print(e)
+            return False
+
+class AirCleaner(HomeAppliance):
+    def __init__(self):
+        super(AirCleaner, self).__init__("공기청정기", "Wait")
+
+    def controller(self):
+        try:
+            print("[공기청정기] \n1. 공기청정기 시작\n2. 공기청정기 종료\n0. 메인메뉴로 돌아가기")
+
+            choice = int(input("공기청정기 옵션을 선택 해주세요: "))
+            
+            if choice == 0:
+                return
+            elif choice == 1:
+                if self._status == "Wait":
+                    self.start()
+                else:
+                    print("현재 공기청정기가 켜져있는 상태 입니다.")
+            elif choice == 2:
+                if self._status == "Wait":
+                    print("현재 공기청정기가 꺼져있는 상태 입니다.")
+                else:
+                    self.end()
+            else:
+                raise ValueError('Input number range error')
+
+        except ValueError as e:
+            print(e)
 
 class PasswordManager():
     def __init__(self):
