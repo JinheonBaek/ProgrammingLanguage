@@ -1,6 +1,16 @@
-import datetime
+# try-except
+# When import libraries, check library is already exist on you local enviroment. 
+try:
+    import re
+    import datetime
+except:
+    print("re 또는 datetime library 가 없습니다.")
+    print("실행 중 라이브러리가 존재하지 않아 예외처리가 발생하여 프로그램이 종료될 수 있습니다.")
 
 class HomeAppliance(object):
+    """
+    
+    """
     def __init__(self, name, status):
         self._name = name
         self._status = status
@@ -262,10 +272,10 @@ class Menu():
                 self._select = choice
                 return (self._select, False)
             else:
-                raise ValueError('Input number range error')
+                raise ValueError('입력하신 숫자의 범위가 잘못 되었습니다. 0 ~ 4 사이의 정수만 입력하셔야 합니다.')
 
-        except ValueError as e:
-            return (e, True)
+        except ValueError as error:
+            return (error, True)
 
     def print_appliances(self, appliances, status=False):
         print("\n현재 등록된 가전제품 목록")
@@ -273,7 +283,7 @@ class Menu():
             print(index, appliance.status if status == True else appliance, sep = '. ')
 
     def add_appliance(self, appliances):
-        print("[가전제품 목록]\n1. 세탁기\n2. 에어컨\n3. 보일러\n4. 공기청정기\n")
+        print("\n[가전제품 목록]\n1. 세탁기\n2. 에어컨\n3. 보일러\n4. 공기청정기\n")
         
         try:
             choice = int(input("추가하실 가전제품 목록을 선택 해주세요: "))
@@ -290,7 +300,7 @@ class Menu():
 
     def delete_appliance(self, appliances):
         if not appliances:
-            print("현재 등록된 가전제품이 없습니다.\n가전제품을 먼저 등록 해주시기 바랍니다.")
+            print("\n현재 등록된 가전제품이 없습니다.\n가전제품을 먼저 등록 해주시기 바랍니다.")
             return
 
         try:
@@ -309,7 +319,7 @@ class Menu():
 
     def check_appliance_status(self, appliances):
         if not appliances:
-            print("현재 등록된 가전제품이 없습니다.\n가전제품을 먼저 등록 해주시기 바랍니다.")
+            print("\n현재 등록된 가전제품이 없습니다.\n가전제품을 먼저 등록 해주시기 바랍니다.")
             return
 
         self.print_appliances(appliances = appliances, status = True)
@@ -317,7 +327,7 @@ class Menu():
     
     def change_appliance_status(self, appliances):
         if not appliances:
-            print("현재 등록된 가전제품이 없습니다.\n가전제품을 먼저 등록 해주시기 바랍니다.")
+            print("\n현재 등록된 가전제품이 없습니다.\n가전제품을 먼저 등록 해주시기 바랍니다.")
             return
 
         self.print_appliances(appliances = appliances, status = True)
@@ -334,68 +344,89 @@ class Menu():
         except ValueError as error:
             print(error)
 
+class PasswordManager():
+    def __init__(self):
+        self._password = None
+        self.set_password()
+    
+    def set_password(self):
+        print("\n가전제품을 등록, 수정, 해제하기 위해서는 별도의 비밀번호가 필요합니다.")
+        print("4~16자 영문 대 소문자, 숫자 만을 사용하셔야 합니다.")
+        
+        while True:
+            try: 
+                password = input("\n사용하실 비밀번호를 입력해주세요: ")
+
+                if re.match(r'[A-Za-z0-9]{4,16}', password) is not None:
+                    (start, end) = re.match(r'[A-Za-z0-9]{4,16}', password).span()
+                    
+                    ## 공백 입력을 방지하기 위해서 (Ex. 0123456 0123 입력 방지)
+                    if password[start:end] == password:
+                        self._password = password
+                        break
+
+                raise ValueError('비밀번호는 4~16자 영문 대 소문자, 숫자 만을 사용하셔야 합니다.')
+            
+            except NameError as error:
+                raise NameError('Python re library 를 설치 해주세요.')
+                
+            except ValueError as error:
+                print(error)
+
+    def compare_password(self, password):
+        if (self._password == password): return True
+        else: return False
+
+    def password_check(self):
+        password = input("비밀번호를 입력해주세요: ")
+
+        if self.compare_password(password): return True
+        
+        print("\n비밀번호가 일치하지 않습니다.")
+        return False
+
 def main():
     print("\n내 집 가전제품 관리 소프트웨어 입니다. :)")
     print("모든 메뉴는 '정수'로 입력하셔야 하며, 입력값에 따라 예외처리가 발생할 수 있습니다.")
     input("계속 진행하시려면 엔터를 입력 해주세요.")
 
-    menu = Menu()
+    try: 
+        menu = Menu()
+        pw_manager = PasswordManager()
+
+        appliances = []
+
+        while True:
+            print("\n" + "*****" * 10)
+            print(menu)
+
+            (message, err_detected) = menu.select()
+
+            if err_detected == True:
+                print(message)
+                continue
+            
+            menu.print_choice(choice = message)
+
+            if message == 0:
+                break
+            elif message == 1:
+                if (pw_manager.password_check() == False): continue
+                menu.add_appliance(appliances)
+            elif message == 2:
+                if (pw_manager.password_check() == False): continue
+                menu.delete_appliance(appliances)
+            elif message == 3:
+                menu.check_appliance_status(appliances)
+            elif message == 4:
+                if (pw_manager.password_check() == False): continue
+                menu.change_appliance_status(appliances)
+
+            print("\n" + "*****" * 10 + "\n")
     
-    appliances = []
-
-    while True:
-        print("\n" + "*****" * 10)
-        print(menu)
-
-        (message, err_detected) = menu.select()
-
-        if err_detected == True:
-            print(message)
-            continue
-        
-        menu.print_choice(choice = message)
-
-        if message == 0:
-            break
-        elif message == 1:
-            menu.add_appliance(appliances)
-        elif message == 2:
-            menu.delete_appliance(appliances)
-        elif message == 3:
-            menu.check_appliance_status(appliances)
-        elif message == 4:
-            menu.change_appliance_status(appliances)
-
-        print("\n" + "*****" * 10 + "\n")
+    except Exception as error:
+        print("\n아래 에러가 발생하여 프로그램을 종료합니다.")
+        print(error)
 
 if __name__ == '__main__':
     main()
-
-# if (pw_manager.password_check() == False): continue
-#
-# class PasswordManager():
-#     def __init__(self):
-#         self._password = None
-#         self.set_password()
-    
-#     def set_password(self):
-#         password = input("비밀번호를 입력해주세요: ")
-#         self._password = password
-
-#     def compare_password(self, password):
-#         if (self._password == password):
-#             return True
-#         else:
-#             return False
-
-#     def password_check(self):
-#         pass
-#         # password = input("비밀번호를 입력해주세요: ")
-
-#         # if self.compare_password(password):
-#         #     print("통과")
-#         #     return True
-#         # else:
-#         #     print("통과 X")
-#         #     return False
-    
