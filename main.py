@@ -7,11 +7,11 @@ class HomeAppliance(object):
         self._created_at = datetime.datetime.now()
 
     def __str__(self):
-        return "가전제품 이름 - {0} / 가전제품 등록 일자 - {1}".format(self._name, self._created_at)
+        return "이름 - {0} / 등록 일자 - {1}".format(self._name, self._created_at)
 
     @property
     def status(self):
-        return "가전제품 이름 - {0} / 가전제품 상태 - {1} / 가전제품 등록 일자 - {2}".format(self._name, self._status, self._created_at)
+        return "이름 - {0} / 상태 - {1} / 등록 일자 - {2}".format(self._name, self._status, self._created_at)
 
     def start(self):
         self._status = "Start"
@@ -38,7 +38,7 @@ class WashingMachine(HomeAppliance):
 
     def controller(self):
         try:
-            print("[세탁 옵션] \n1. 행굼\n2. 표준\n3. 강력 세탁\n0. 메인메뉴로 돌아가기")
+            print("\n[세탁 옵션] \n1. 행굼\n2. 표준\n3. 강력 세탁\n0. 메인메뉴로 돌아가기\n")
 
             choice = int(input("세탁 옵션을 선택 해주세요: "))
             
@@ -48,12 +48,12 @@ class WashingMachine(HomeAppliance):
                 if self._status == "Wait": 
                     self.start(interval = 0.1 * choice)
                 else: 
-                    print("현재 세탁 진행 중입니다.\n세탁이 완료된 후 다음 세탁을 이용 부탁드립니다.")
+                    print("\n현재 세탁 진행 중입니다.\n세탁이 완료된 후 다음 세탁을 이용 부탁드립니다.")
             else:
-                raise ValueError('Input number range error')
+                raise ValueError('입력하신 숫자의 범위가 잘못 되었습니다. 0 ~ 3 사이의 정수만 입력하셔야 합니다.')
 
-        except ValueError as e:
-            print(e)
+        except ValueError as error:
+            print(error)
 
     def start(self, interval):
         super(WashingMachine, self).start()
@@ -82,7 +82,7 @@ class AirConditioner(HomeAppliance):
 
     def controller(self):
         try:
-            print("[에어컨 옵션] \n1. 에어컨 시작\n2. 에어컨 온도 조절\n3. 에어컨 종료\n0. 메인메뉴로 돌아가기")
+            print("\n[에어컨 옵션] \n1. 에어컨 시작\n2. 에어컨 온도 조절\n3. 에어컨 종료\n0. 메인메뉴로 돌아가기\n")
 
             choice = int(input("에어컨 옵션을 선택 해주세요: "))
             
@@ -92,22 +92,22 @@ class AirConditioner(HomeAppliance):
                 if self._status == "Wait":
                     self.start()
                 else:
-                    print("현재 에어컨이 켜져있는 상태 입니다. 에어컨의 희망 온도는 {0} 입니다.".format(self._target_temperature))
+                    print("\n현재 에어컨이 켜져있는 상태 입니다. 에어컨의 희망 온도는 {0} 입니다.".format(self._target_temperature))
             elif choice == 2:
                 if self._status == "Wait":
-                    print("현재 에어컨이 꺼져있는 상태 입니다. 에어컨을 킨 다음 이용 부탁드립니다.")
+                    print("\n현재 에어컨이 꺼져있는 상태 입니다. 에어컨을 킨 다음 이용 부탁드립니다.")
                 else:
                     self.set_temperature()
             elif choice == 3:
                 if self._status == "Wait":
-                    print("현재 에어컨이 꺼져있는 상태 입니다.")
+                    print("\n현재 에어컨이 꺼져있는 상태 입니다.")
                 else:
                     self.end()
             else:
-                raise ValueError('Input number range error')
+                raise ValueError('입력하신 숫자의 범위가 잘못 되었습니다. 0 ~ 3 사이의 정수만 입력하셔야 합니다.')
 
-        except ValueError as e:
-            print(e)
+        except ValueError as error:
+            print(error)
 
     def start(self):
         super(AirConditioner, self).start()
@@ -118,7 +118,7 @@ class AirConditioner(HomeAppliance):
 
     def set_temperature(self):
         try:
-            print("에어컨 설정 온도 범위 (정수): 18 ~ 30")
+            print("\n에어컨 설정 온도 범위 (정수): 18 ~ 30")
 
             temperature = int(input("에어컨 온도를 설정 해주세요: "))
             
@@ -126,10 +126,10 @@ class AirConditioner(HomeAppliance):
                 self._target_temperature = temperature
                 return True
             else:
-                raise ValueError('Input number range error')
+                raise ValueError('입력하신 숫자의 범위가 잘못 되었습니다. 18 ~ 30 사이의 정수만 입력하셔야 합니다.')
 
-        except ValueError as e:
-            print(e)
+        except ValueError as error:
+            print(error)
             return False
 
 class Boiler(HomeAppliance):
@@ -139,7 +139,7 @@ class Boiler(HomeAppliance):
 
     @property
     def status(self):
-        basic_status = super(AirConditioner, self).status
+        basic_status = super(Boiler, self).status
         
         if self._status == "Wait":
             return basic_status
@@ -148,7 +148,7 @@ class Boiler(HomeAppliance):
 
     def controller(self):
         try:
-            print("[보일러] \n1. 보일러 시작\n2. 보일러 온도 조절\n3. 보일러 종료\n0. 메인메뉴로 돌아가기")
+            print("\n[보일러] \n1. 보일러 시작\n2. 보일러 온도 조절\n3. 보일러 종료\n0. 메인메뉴로 돌아가기\n")
 
             choice = int(input("보일러 옵션을 선택 해주세요: "))
             
@@ -158,22 +158,22 @@ class Boiler(HomeAppliance):
                 if self._status == "Wait":
                     self.start()
                 else:
-                    print("현재 보일러가 켜져있는 상태 입니다. 보일러의 희망 온도는 {0} 입니다.".format(self._target_temperature))
+                    print("\n현재 보일러가 켜져있는 상태 입니다. 보일러의 희망 온도는 {0} 입니다.".format(self._target_temperature))
             elif choice == 2:
                 if self._status == "Wait":
-                    print("현재 보일러가 꺼져있는 상태 입니다. 보일러를 킨 다음 이용 부탁드립니다.")
+                    print("\n현재 보일러가 꺼져있는 상태 입니다. 보일러를 킨 다음 이용 부탁드립니다.")
                 else:
                     self.set_temperature()
             elif choice == 3:
                 if self._status == "Wait":
-                    print("현재 보일러가 꺼져있는 상태 입니다.")
+                    print("\n현재 보일러가 꺼져있는 상태 입니다.")
                 else:
                     self.end()
             else:
-                raise ValueError('Input number range error')
+                raise ValueError('입력하신 숫자의 범위가 잘못 되었습니다. 0 ~ 3 사이의 정수만 입력하셔야 합니다.')
 
-        except ValueError as e:
-            print(e)
+        except ValueError as error:
+            print(error)
 
     def start(self):
         super(Boiler, self).start()
@@ -184,7 +184,7 @@ class Boiler(HomeAppliance):
 
     def set_temperature(self):
         try:
-            print("보일러 설정 온도 범위 (정수): 18 ~ 30")
+            print("\n보일러 설정 온도 범위 (정수): 18 ~ 30")
 
             temperature = int(input("보일러 온도를 설정 해주세요: "))
             
@@ -192,10 +192,10 @@ class Boiler(HomeAppliance):
                 self._target_temperature = temperature
                 return True
             else:
-                raise ValueError('Input number range error')
+                raise ValueError('입력하신 숫자의 범위가 잘못 되었습니다. 18 ~ 30 사이의 정수만 입력하셔야 합니다.')
 
-        except ValueError as e:
-            print(e)
+        except ValueError as error:
+            print(error)
             return False
 
 class AirCleaner(HomeAppliance):
@@ -204,7 +204,7 @@ class AirCleaner(HomeAppliance):
 
     def controller(self):
         try:
-            print("[공기청정기] \n1. 공기청정기 시작\n2. 공기청정기 종료\n0. 메인메뉴로 돌아가기")
+            print("\n[공기청정기] \n1. 공기청정기 시작\n2. 공기청정기 종료\n0. 메인메뉴로 돌아가기\n")
 
             choice = int(input("공기청정기 옵션을 선택 해주세요: "))
             
@@ -214,28 +214,28 @@ class AirCleaner(HomeAppliance):
                 if self._status == "Wait":
                     self.start()
                 else:
-                    print("현재 공기청정기가 켜져있는 상태 입니다.")
+                    print("\n현재 공기청정기가 켜져있는 상태 입니다.")
             elif choice == 2:
                 if self._status == "Wait":
-                    print("현재 공기청정기가 꺼져있는 상태 입니다.")
+                    print("\n현재 공기청정기가 꺼져있는 상태 입니다.")
                 else:
                     self.end()
             else:
-                raise ValueError('Input number range error')
+                raise ValueError('입력하신 숫자의 범위가 잘못 되었습니다. 0 ~ 2 사이의 정수만 입력하셔야 합니다.')
 
-        except ValueError as e:
-            print(e)
+        except ValueError as error:
+            print(error)
     
 class Menu():
     def __init__(self):
-        self._display_string = "[메뉴]\n1. 가전제품 등록하기\n2. 가전제품 등록 해제하기\n3. 가전제품 상태 확인하기\n4. 가전제품 상태 변경하기\n0. 프로그램 종료하기"
+        self._display_string = "\n[메뉴]\n1. 가전제품 등록하기\n2. 가전제품 등록 해제하기\n3. 가전제품 상태 확인하기\n4. 가전제품 상태 변경하기\n0. 프로그램 종료하기\n"
         self._select = None
         self._choices = {
             0: lambda: print("\n프로그램을 종료합니다. \n이용해 주셔서 감사합니다."),
-            1: lambda: print("\n가전제품 등록하기를 선택 하셨습니다."),
-            2: lambda: print("\n가전제품 등록 해제하기를 선택 하셨습니다."),
-            3: lambda: print("\n가전제품 상태 확인하기를 선택 하셨습니다."),
-            4: lambda: print("\n가전제품 상태 변경하기를 선택 하셨습니다.")
+            1: lambda: print("\n*** 가전제품 등록하기를 선택 하셨습니다. ***\n"),
+            2: lambda: print("\n*** 가전제품 등록 해제하기를 선택 하셨습니다. ***\n"),
+            3: lambda: print("\n*** 가전제품 상태 확인하기를 선택 하셨습니다. ***\n"),
+            4: lambda: print("\n*** 가전제품 상태 변경하기를 선택 하셨습니다. ***\n")
         }
         self._appliances = {
             1: WashingMachine,
@@ -243,6 +243,9 @@ class Menu():
             3: Boiler,
             4: AirCleaner
         }
+
+    def __str__(self):
+        return self._display_string
 
     def print_choice(self, choice = False):
         if choice == False: 
@@ -264,8 +267,13 @@ class Menu():
         except ValueError as e:
             return (e, True)
 
+    def print_appliances(self, appliances, status=False):
+        print("\n현재 등록된 가전제품 목록")
+        for index, appliance in enumerate(appliances):
+            print(index, appliance.status if status == True else appliance, sep = '. ')
+
     def add_appliance(self, appliances):
-        print("[가전제품 목록]\n1. 세탁기\n2. 에어컨\n3. 보일러\n4. 공기청정기")
+        print("[가전제품 목록]\n1. 세탁기\n2. 에어컨\n3. 보일러\n4. 공기청정기\n")
         
         try:
             choice = int(input("추가하실 가전제품 목록을 선택 해주세요: "))
@@ -273,73 +281,70 @@ class Menu():
             if 1 <= choice <= 4:
                 appliance = self._appliances.get(choice)
                 appliances.append(appliance())
+                self.print_appliances(appliances)
             else:
-                raise ValueError('Input number range error')
+                raise ValueError('입력하신 숫자의 범위가 잘못 되었습니다. 1 ~ 4 사이의 정수만 입력하셔야 합니다.')
 
-        except ValueError as e:
-            print(e)
+        except ValueError as error:
+            print(error)
 
     def delete_appliance(self, appliances):
         if not appliances:
-            print("Appliances list is empty")
+            print("현재 등록된 가전제품이 없습니다.\n가전제품을 먼저 등록 해주시기 바랍니다.")
             return
-        
-        print("[현재 등록되어 있는 가전제품 목록]")
-
-        for index, appliance in enumerate(appliances):
-            print(index, appliance, sep = '. ')
 
         try:
-            choice = int(input("제거하실 가전제품 번호를 선택 해주세요: "))
+            self.print_appliances(appliances)
+            choice = int(input("\n제거하실 가전제품 번호를 선택 해주세요: "))
             
             if 0 <= choice < len(appliances):
                 appliances.pop(choice)
+                self.print_appliances(appliances)
             else:
-                raise ValueError('Input number range error')
+                raise ValueError('입력하신 숫자의 범위가 잘못 되었습니다. 0 ~ {} 사이의 정수만 입력하셔야 합니다.'.format(len(appliances) - 1))
 
-        except ValueError as e:
-            print(e)
+        except ValueError as error:
+            print(error)
 
 
     def check_appliance_status(self, appliances):
         if not appliances:
-            print("Appliances list is empty")
+            print("현재 등록된 가전제품이 없습니다.\n가전제품을 먼저 등록 해주시기 바랍니다.")
             return
 
-        print("Check Appliance Status")
-
-        for index, appliance in enumerate(appliances):
-            print(index, appliance.status, sep = '. ')
+        self.print_appliances(appliances = appliances, status = True)
 
     
     def change_appliance_status(self, appliances):
         if not appliances:
-            print("Appliances list is empty")
+            print("현재 등록된 가전제품이 없습니다.\n가전제품을 먼저 등록 해주시기 바랍니다.")
             return
 
-        print("Change Appliance Status")
-        self.check_appliance_status(appliances)
+        self.print_appliances(appliances = appliances, status = True)
 
         try:
-            choice = int(input("상태를 변경하실 가전제품 번호를 선택 해주세요: "))
+            choice = int(input("\n상태를 변경하실 가전제품 번호를 선택 해주세요: "))
             
             if 0 <= choice < len(appliances):
                 appliances[choice].controller()
+                self.print_appliances(appliances = appliances, status = True)
             else:
-                raise ValueError('Input number range error')
+                raise ValueError('입력하신 숫자의 범위가 잘못 되었습니다. 0 ~ {} 사이의 정수만 입력하셔야 합니다.'.format(len(appliances) - 1))
 
-        except ValueError as e:
-            print(e)
-
-    def __str__(self):
-        return self._display_string
+        except ValueError as error:
+            print(error)
 
 def main():
+    print("\n내 집 가전제품 관리 소프트웨어 입니다. :)")
+    print("모든 메뉴는 '정수'로 입력하셔야 하며, 입력값에 따라 예외처리가 발생할 수 있습니다.")
+    input("계속 진행하시려면 엔터를 입력 해주세요.")
+
     menu = Menu()
     
     appliances = []
 
     while True:
+        print("\n" + "*****" * 10)
         print(menu)
 
         (message, err_detected) = menu.select()
@@ -360,6 +365,8 @@ def main():
             menu.check_appliance_status(appliances)
         elif message == 4:
             menu.change_appliance_status(appliances)
+
+        print("\n" + "*****" * 10 + "\n")
 
 if __name__ == '__main__':
     main()
