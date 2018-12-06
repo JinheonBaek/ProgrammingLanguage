@@ -1,18 +1,4 @@
-class Person(object):
-    pass
-
-class Customer(Person):
-    pass
-
-class KoreaUniver(Customer):
-    pass
-
-class Youth(Customer):
-    pass
-
-class Employee(Person):
-    pass
-
+import person, beverage
 
 def main():
     print("Hello World")
