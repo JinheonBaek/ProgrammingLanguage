@@ -9,8 +9,15 @@ except:
 
 class HomeAppliance(object):
     """
-    
+    Home Appliances Class, parent class to all other appliance classes.
+
+    Attributes:
+        __str__: Print name and created date of appliance.
+        status: Print name, status and created date of appliance.
+        start: Start appliance and update status of appliance to Start.
+        end: End appliance and update status of appliance to Wait.
     """
+
     def __init__(self, name, status):
         self._name = name
         self._status = status
@@ -30,6 +37,18 @@ class HomeAppliance(object):
         self._status = "Wait"
     
 class WashingMachine(HomeAppliance):
+    """
+    WashingMachine Class, parent class is HomeAppliance class.
+
+    WashingMachine shold have property about remaining-time of machine.
+
+    Attributes:
+        status: With basic status using status function of parent class, print additional info about remaining time.
+        controller: Print options and control selected input of user on each state.
+        start: Start Washing Machine with some time interval.
+        update: Update state of wachine machine when finishes washing.
+    """
+
     def __init__(self):
         super(WashingMachine, self).__init__("세탁기", "Wait")
         self._started_at = datetime.datetime.now()
@@ -47,6 +66,8 @@ class WashingMachine(HomeAppliance):
             return basic_status + ' / 잔여 시각 - {0}'.format(finished_at - datetime.datetime.now())
 
     def controller(self):
+        ## try - except
+        ## Check user enters valid number about options.
         try:
             print("\n[세탁 옵션] \n1. 행굼\n2. 표준\n3. 강력 세탁\n0. 메인메뉴로 돌아가기\n")
 
@@ -77,6 +98,18 @@ class WashingMachine(HomeAppliance):
             self._status = "Wait"
 
 class AirConditioner(HomeAppliance):
+    """
+    AirConditioner Class, parent class is HomeAppliance class.
+
+    AirConditioner shold have property about temperature user want to set.
+
+    Attributes:
+        status: With basic status using status function of parent class, print additional info about target temperature.
+        controller: Print options and control selected input of user on each state.
+        start: Start AirConditioner with some target temperature.
+        set_temperature: Set target temperature of Home between 18 and 30 with integer value. 
+    """
+
     def __init__(self):
         super(AirConditioner, self).__init__("에어컨", "Wait")
         self._target_temperature = 0
@@ -91,6 +124,8 @@ class AirConditioner(HomeAppliance):
             return basic_status + ' / 현재 설정 온도 - {0}'.format(self._target_temperature)
 
     def controller(self):
+        ## try - except
+        ## Check user enters valid number about options.
         try:
             print("\n[에어컨 옵션] \n1. 에어컨 시작\n2. 에어컨 온도 조절\n3. 에어컨 종료\n0. 메인메뉴로 돌아가기\n")
 
@@ -127,6 +162,8 @@ class AirConditioner(HomeAppliance):
             print("에어컨 온도 설정에 실패하여 에어컨을 기본온도(24도)로 시작하였습니다.")
 
     def set_temperature(self):
+        ## try - except
+        ## Check user enters valid number about temperature.
         try:
             print("\n에어컨 설정 온도 범위 (정수): 18 ~ 30")
 
@@ -143,6 +180,18 @@ class AirConditioner(HomeAppliance):
             return False
 
 class Boiler(HomeAppliance):
+    """
+    Boiler Class, parent class is HomeAppliance class.
+
+    Boiler shold have property about temperature user want to set.
+
+    Attributes:
+        status: With basic status using status function of parent class, print additional info about target temperature.
+        controller: Print options and control selected input of user on each state.
+        start: Start Boiler with some target temperature.
+        set_temperature: Set target temperature of Home between 18 and 30 with integer value. 
+    """
+
     def __init__(self):
         super(Boiler, self).__init__("보일러", "Wait")
         self._target_temperature = 0
@@ -157,6 +206,8 @@ class Boiler(HomeAppliance):
             return basic_status + ' / 현재 설정 온도 - {0}'.format(self._target_temperature)
 
     def controller(self):
+        ## try - except
+        ## Check user enters valid number about options.
         try:
             print("\n[보일러] \n1. 보일러 시작\n2. 보일러 온도 조절\n3. 보일러 종료\n0. 메인메뉴로 돌아가기\n")
 
@@ -193,6 +244,8 @@ class Boiler(HomeAppliance):
             print("보일러 온도 설정에 실패하여 보일러를 기본온도(24도)로 시작하였습니다.")
 
     def set_temperature(self):
+        ## try - except
+        ## Check user enters valid number about temperature.
         try:
             print("\n보일러 설정 온도 범위 (정수): 18 ~ 30")
 
@@ -209,10 +262,19 @@ class Boiler(HomeAppliance):
             return False
 
 class AirCleaner(HomeAppliance):
+    """
+    AirCleaner Class, parent class is HomeAppliance class.
+
+    Attributes:
+        controller: Print options and control selected input of user on each state. 
+    """
+
     def __init__(self):
         super(AirCleaner, self).__init__("공기청정기", "Wait")
 
     def controller(self):
+        ## try - except
+        ## Check user enters valid number about options.
         try:
             print("\n[공기청정기] \n1. 공기청정기 시작\n2. 공기청정기 종료\n0. 메인메뉴로 돌아가기\n")
 
@@ -237,6 +299,20 @@ class AirCleaner(HomeAppliance):
             print(error)
     
 class Menu():
+    """
+    Menu Class, control all of user inputs about create, read, update, delete appliances. 
+
+    Attributes:
+        __str__: Print main menu.
+        print_choice: Print user's choice about menu to notify that you select that menu.
+        select: Select function that control user's choice about main-menu.
+        print_appliances: Print each appliance (or appliance status) contained on appliances list.
+        add_appliance: Add appliance on list that holds set of appliances based on the user's input about appliance number.
+        delete_appliance: Delete one appliance on list that holds set of appliances based on the uesr's input about appliance number.
+        check_appliance_status: Print status of all appliance on list.
+        change_appliance_status: Change one appliance on list that holds set of appliances based on the user's input about appliance number.
+    """
+    
     def __init__(self):
         self._display_string = "\n[메뉴]\n1. 가전제품 등록하기\n2. 가전제품 등록 해제하기\n3. 가전제품 상태 확인하기\n4. 가전제품 상태 변경하기\n0. 프로그램 종료하기\n"
         self._select = None
@@ -265,6 +341,8 @@ class Menu():
         action()
 
     def select(self):
+        ## try - except
+        ## Check user enters valid number about options.
         try:
             choice = int(input("메뉴를 선택해주세요: "))
             
@@ -285,6 +363,8 @@ class Menu():
     def add_appliance(self, appliances):
         print("\n[가전제품 목록]\n1. 세탁기\n2. 에어컨\n3. 보일러\n4. 공기청정기\n")
         
+        ## try - except
+        ## Check user enters valid number about options.
         try:
             choice = int(input("추가하실 가전제품 목록을 선택 해주세요: "))
             
@@ -303,6 +383,8 @@ class Menu():
             print("\n현재 등록된 가전제품이 없습니다.\n가전제품을 먼저 등록 해주시기 바랍니다.")
             return
 
+        ## try - except
+        ## Check user enters valid number about options.
         try:
             self.print_appliances(appliances)
             choice = int(input("\n제거하실 가전제품 번호를 선택 해주세요: "))
@@ -332,6 +414,8 @@ class Menu():
 
         self.print_appliances(appliances = appliances, status = True)
 
+        ## try - except
+        ## Check user enters valid number about options.
         try:
             choice = int(input("\n상태를 변경하실 가전제품 번호를 선택 해주세요: "))
             
@@ -345,6 +429,15 @@ class Menu():
             print(error)
 
 class PasswordManager():
+    """
+    PasswordManager Class, set password when user first runs software and compare when user create, update, delete appliances.  
+
+    Attributes:
+        set_password: Set password based on some rules (영문 대 소문자, 숫자 / 4 ~ 16 자).
+        compare_password: Compare password based on two passwords (class holds and passed by parameter).
+        password_check: With this function, system can check whether user know or not a system password.
+    """
+
     def __init__(self):
         self._password = None
         self.set_password()
@@ -354,6 +447,8 @@ class PasswordManager():
         print("4~16자 영문 대 소문자, 숫자 만을 사용하셔야 합니다.")
         
         while True:
+            ## try - except
+            ## Check user enters valid password for the rule.
             try: 
                 password = input("\n사용하실 비밀번호를 입력해주세요: ")
 
@@ -390,6 +485,8 @@ def main():
     print("모든 메뉴는 '정수'로 입력하셔야 하며, 입력값에 따라 예외처리가 발생할 수 있습니다.")
     input("계속 진행하시려면 엔터를 입력 해주세요.")
 
+    ## try - except
+    ## Syntax to prepare for possible errors.
     try: 
         menu = Menu()
         pw_manager = PasswordManager()
