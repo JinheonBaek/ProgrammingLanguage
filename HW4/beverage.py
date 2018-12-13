@@ -29,7 +29,7 @@ class Beverage(object):
 
 class Americano(Beverage):
     """
-    Americano Class, parent class is Beverage class.
+    Americano Class, parent class is a Beverage class.
 
     description is a class variable that represent beverage info. \n
     Using super method, set name, price and time of the beverage.
@@ -41,7 +41,7 @@ class Americano(Beverage):
 
 class CafeLatte(Beverage):
     """
-    CafeLatte Class, parent class is Beverage class.
+    CafeLatte Class, parent class is a Beverage class.
 
     description is a class variable that represent beverage info. \n
     Using super method, set name, price and time of the beverage.
@@ -53,7 +53,7 @@ class CafeLatte(Beverage):
 
 class Cappuccino(Beverage):
     """
-    Cappuccino Class, parent class is Beverage class.
+    Cappuccino Class, parent class is a Beverage class.
 
     description is a class variable that represent beverage info. \n
     Using super method, set name, price and time of the beverage.
@@ -65,7 +65,7 @@ class Cappuccino(Beverage):
 
 class VanillaLatte(Beverage):
     """
-    VanillaLatte Class, parent class is Beverage class.
+    VanillaLatte Class, parent class is a Beverage class.
 
     description is a class variable that represent beverage info. \n
     Using super method, set name, price and time of the beverage.
@@ -77,7 +77,7 @@ class VanillaLatte(Beverage):
 
 class CafeMocha(Beverage):
     """
-    CafeMocha Class, parent class is Beverage class.
+    CafeMocha Class, parent class is a Beverage class.
 
     description is a class variable that represent beverage info. \n
     Using super method, set name, price and time of the beverage.
@@ -89,7 +89,7 @@ class CafeMocha(Beverage):
 
 class CaramelMaki(Beverage):
     """
-    CaramelMaki Class, parent class is Beverage class.
+    CaramelMaki Class, parent class is a Beverage class.
 
     description is a class variable that represent beverage info. \n
     Using super method, set name, price and time of the beverage.
@@ -101,7 +101,7 @@ class CaramelMaki(Beverage):
 
 class HotChocolate(Beverage):
     """
-    HotChocolate Class, parent class is Beverage class.
+    HotChocolate Class, parent class is a Beverage class.
 
     description is a class variable that represent beverage info. \n
     Using super method, set name, price and time of the beverage.
@@ -113,7 +113,7 @@ class HotChocolate(Beverage):
 
 class MintChocolate(Beverage):
     """
-    MintChocolate Class, parent class is Beverage class.
+    MintChocolate Class, parent class is a Beverage class.
 
     description is a class variable that represent beverage info. \n
     Using super method, set name, price and time of the beverage.

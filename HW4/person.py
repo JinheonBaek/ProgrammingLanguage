@@ -14,7 +14,7 @@ class Person(object):
 
 class Customer(Person):
     """
-    Customer Class, parent class is Person class.
+    Customer Class, parent class is a Person class.
 
     Attributes:
         Using super method, set name of the person.
@@ -29,18 +29,18 @@ class Customer(Person):
         ## Getter of the customer's order list
         return self._orderList
 
+    def get_menu(self):
+        ## Whether customer wants are not menu list
+        ### In this setting, customer only returns True,
+        ### But if we set return variable as False, menu is not printed to the customer.
+        return True
+
     def make_order(self, orderList):
         ## Customer makes order with parameter orderList
         ### Instance all orderList, and customer holds instanced order list.
         ### After instantiation, print orders of the customer.
         self._orderList = [order() for order in orderList]
         self.print_order()
-
-    def get_menu(self):
-        ## Whether customer wants are not menu list
-        ### In this setting, customer only returns True,
-        ### But if we set return variable as False, menu is not printed to the customer.
-        return True
 
     def print_order(self):
         ## Print orders of the customer
@@ -54,7 +54,7 @@ class Customer(Person):
 
 class KoreaUniver(Customer):
     """
-    KoreaUniver Class, parent class is Customer class.
+    KoreaUniver Class, parent class is a Customer class.
 
     Distinguish Korea University Student with others using class name. (instance.__class__)
     """
@@ -62,7 +62,7 @@ class KoreaUniver(Customer):
 
 class Youth(Customer):
     """
-    Youth Class, parent class is Customer class.
+    Youth Class, parent class is a Customer class.
 
     Distinguish Youth with others using class name. (instance.__class__)
     """
@@ -70,7 +70,7 @@ class Youth(Customer):
 
 class Employee(Person):
     """
-    Employee Class, parent class is Person class.
+    Employee Class, parent class is a Person class.
 
     Attributes:
         Using super method, set name of the person.

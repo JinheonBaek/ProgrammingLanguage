@@ -40,7 +40,7 @@ def main():
         person.Employee('은혁')
     ]
 
-    ## Beverage menus (out cafe shop has below beverages)
+    ## Beverage menus (our cafe shop has below beverages)
     menus = {
         'Americano': beverage.Americano,
         'CafeLatte': beverage.CafeLatte,
