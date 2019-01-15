@@ -1,6 +1,6 @@
-# Machine Learning (ML)
+# Programming Language
 
-## Korea Univ. Machine Learning Class (COSE231(03), Fall, 2018)
+## Korea Univ. Programming Language Class (COSE231(03), Fall, 2018)
 
 ### All Assignments are included in each folder.
 * Do NOT Copy This All Solution.
